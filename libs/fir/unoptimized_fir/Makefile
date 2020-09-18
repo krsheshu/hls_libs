@@ -16,14 +16,14 @@ export DEV_PARTNAME						=	xczu4cg-sfvc784-1-e
 # Project Options
 export PROJECT_NAME						=	unoptimized_fir
 export PROJECT_ROOT_DIR					=	$(shell pwd)
-export HLS_ROOT_DIR						=	${PROJECT_ROOT_DIR}/../../../
+export HLS_ROOT_DIR						=	${PROJECT_ROOT_DIR}/../../..
 
 
 export SOLUTION_NAME					=	solution_1
 export SOLUTION_ROOT_DIR				=	${PROJECT_ROOT_DIR}
 export TOP_LEVEL_FUNCTION				=   ${PROJECT_NAME}
 
-export PROJECT_SRC_BASE_DIR				=	${PROJECT_ROOT_DIR}/src/
+export PROJECT_SRC_BASE_DIR				=	${PROJECT_ROOT_DIR}/src
 
 # Directory options
 export SRC_DIR							=	${PROJECT_SRC_BASE_DIR}
@@ -83,7 +83,7 @@ SYNTH_RPT_FILE							=	${OUTPUT_DIR}/${SOLUTION_NAME}/syn/report/${PROJECT_NAME}
 COSIM_RPT_FILE							=	${OUTPUT_DIR}/${SOLUTION_NAME}/sim/report/${PROJECT_NAME}_cosim.rpt
 
 
-${VIVADO_HLS_PROJ_FILE}:
+${VIVADO_HLS_PROJ_FILE}: ${SRC_DIR}/*.cpp ${SRC_DIR}/*.h ${TB_DIR}/*.cpp
 
 	@echo "\n=======================  Create Project ==========================\n"
 	mkdir -p ${OUTPUT_DIR}
