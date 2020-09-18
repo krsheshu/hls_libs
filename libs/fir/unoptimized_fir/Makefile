@@ -29,7 +29,7 @@ export PROJECT_SRC_BASE_DIR				=	${PROJECT_ROOT_DIR}/src/
 export SRC_DIR							=	${PROJECT_SRC_BASE_DIR}
 export SCR_DIR							=	${PROJECT_ROOT_DIR}/scr
 export TB_DIR							=	${PROJECT_ROOT_DIR}/tb
-export OUTPUT_DIR						=	${PROJECT_ROOT_DIR}/${PROJECT_NAME}
+export OUTPUT_DIR						=	${PROJECT_ROOT_DIR}/builds
 
 # Filenames
 export SRC_FILES						=	${SRC_DIR}/*.*
@@ -58,6 +58,8 @@ TIME									= /usr/bin/time
 
 all: creat_proj sim synth cosim
 
+
+
 #-------------------------------------------------------------------------------
 # Clean-up
 #-------------------------------------------------------------------------------
@@ -84,25 +86,26 @@ COSIM_RPT_FILE							=	${OUTPUT_DIR}/${SOLUTION_NAME}/sim/report/${PROJECT_NAME}
 ${VIVADO_HLS_PROJ_FILE}:
 
 	@echo "\n=======================  Create Project ==========================\n"
-	time ( ${VIVADO_HLS_BIN} -f ${HLS_PROJ_CONFIG_TCL_FILE} )
+	mkdir -p ${OUTPUT_DIR}
+	cd ${OUTPUT_DIR} && time ( ${VIVADO_HLS_BIN} -f ${HLS_PROJ_CONFIG_TCL_FILE} )
 
 
 $(SIM_RPT_FILE):
 
 	@echo "\n==============================  SIM  =============================\n"
-	time ( export HLS_EXEC=0 && ${VIVADO_HLS_BIN} -f ${HLS_RUN_TASK_TCL_FILE} )
+	cd ${OUTPUT_DIR} && time ( export HLS_EXEC=0 && ${VIVADO_HLS_BIN} -f ${HLS_RUN_TASK_TCL_FILE} )
 
 
 ${SYNTH_RPT_FILE}:
 
 	@echo "\n============================  SYNTH  =============================\n"
-	time ( export HLS_EXEC=1 && ${VIVADO_HLS_BIN} -f ${HLS_RUN_TASK_TCL_FILE} )
+	cd ${OUTPUT_DIR} && time ( export HLS_EXEC=1 && ${VIVADO_HLS_BIN} -f ${HLS_RUN_TASK_TCL_FILE} )
 
 
 ${COSIM_RPT_FILE}:
 
 	@echo "\n============================  CO-SIM  ============================\n"
-	time ( export HLS_EXEC=2 && ${VIVADO_HLS_BIN} -f ${HLS_RUN_TASK_TCL_FILE} )
+	cd ${OUTPUT_DIR} && time ( export HLS_EXEC=2 && ${VIVADO_HLS_BIN} -f ${HLS_RUN_TASK_TCL_FILE} )
 
 
 creat_proj:	${VIVADO_HLS_PROJ_FILE}
@@ -116,7 +119,5 @@ cosim: synth ${COSIM_RPT_FILE}
 export: cosim
 
 	@echo "\n============================= EXPORT =============================\n"
-	time ( export HLS_EXEC=3 && ${VIVADO_HLS_BIN} -f ${HLS_RUN_TASK_TCL_FILE} )
-
-
+	cd ${OUTPUT_DIR} && time ( export HLS_EXEC=3 && ${VIVADO_HLS_BIN} -f ${HLS_RUN_TASK_TCL_FILE} )
 
