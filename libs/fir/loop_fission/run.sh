@@ -11,7 +11,7 @@ fi
 
 
 #Change the project name
-PROJECT_NAME=unoptimized_fir
+PROJECT_NAME=loop_fission
 
 #Change the following when needed
 BUILD_DIR=builds

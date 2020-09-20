@@ -11,7 +11,7 @@ fi
 
 
 #Change the project name
-PROJECT_NAME=unoptimized_fir
+PROJECT_NAME=loop_unrolling
 
 #Change the following when needed
 BUILD_DIR=builds
@@ -33,6 +33,6 @@ if [[ $1 != "-nomake" ]]; then
 fi
 
 gvimdiff  ${BUILD_DIR}/${PROJECT_NAME}/${SOLUTION_NAME_10_NS}/${rpt_file} \
-          #${BUILD_DIR}/${PROJECT_NAME}/${SOLUTION_NAME_5_NS}/${rpt_file}  \
-          #${BUILD_DIR}/${PROJECT_NAME}/${SOLUTION_NAME_1_NS}/${rpt_file}
+         # ${BUILD_DIR}/${PROJECT_NAME}/${SOLUTION_NAME_5_NS}/${rpt_file}  \
+         # ${BUILD_DIR}/${PROJECT_NAME}/${SOLUTION_NAME_1_NS}/${rpt_file}
 
