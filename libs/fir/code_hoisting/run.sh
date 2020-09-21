@@ -2,8 +2,8 @@
 
 if [[ $1 == "-h" ]]; then
 
-  echo "Usage : $0          - to make the complete program and display the comparison results"
-  echo "      : $0 -nomake  - don't run make, just display the results"
+  echo "Usage : $0          - to make the complete program and display the comparison results ( def: target clock: 10ns)"
+  echo "      : $0 -a       - Full Run ( run all solutions. def: target clock 10ns, 5ns and 1ns)"
   echo "      : $0 -h       - Display this help"
   exit
 
@@ -23,16 +23,22 @@ SOLUTION_NAME_5_NS=ns${CLK5}
 SOLUTION_NAME_1_NS=ns${CLK1}
 rpt_file=syn/report/${PROJECT_NAME}_csynth.rpt
 
-if [[ $1 != "-nomake" ]]; then
+make PROJECT_NAME=${PROJECT_NAME} SOLUTION_NAME=${SOLUTION_NAME_10_NS} TARGET_CLOCK_PERIOD_NS=${CLK10}
 
-  make clean
-  make PROJECT_NAME=${PROJECT_NAME} SOLUTION_NAME=${SOLUTION_NAME_10_NS} TARGET_CLOCK_PERIOD_NS=${CLK10}
-  #make PROJECT_NAME=${PROJECT_NAME} SOLUTION_NAME=${SOLUTION_NAME_5_NS}  TARGET_CLOCK_PERIOD_NS=${CLK5}
-  #make PROJECT_NAME=${PROJECT_NAME} SOLUTION_NAME=${SOLUTION_NAME_1_NS}  TARGET_CLOCK_PERIOD_NS=${CLK1}
+if [[ $1 == "-a" ]]; then
+
+  make PROJECT_NAME=${PROJECT_NAME} SOLUTION_NAME=${SOLUTION_NAME_5_NS}  TARGET_CLOCK_PERIOD_NS=${CLK5}
+  make PROJECT_NAME=${PROJECT_NAME} SOLUTION_NAME=${SOLUTION_NAME_1_NS}  TARGET_CLOCK_PERIOD_NS=${CLK1}
+  gvimdiff  ${BUILD_DIR}/${PROJECT_NAME}/${SOLUTION_NAME_10_NS}/${rpt_file} \
+            ${BUILD_DIR}/${PROJECT_NAME}/${SOLUTION_NAME_5_NS}/${rpt_file}  \
+            ${BUILD_DIR}/${PROJECT_NAME}/${SOLUTION_NAME_1_NS}/${rpt_file}
+
+
+
+else
+
+  gvim  ${BUILD_DIR}/${PROJECT_NAME}/${SOLUTION_NAME_10_NS}/${rpt_file}
 
 fi
 
-gvimdiff  ${BUILD_DIR}/${PROJECT_NAME}/${SOLUTION_NAME_10_NS}/${rpt_file} \
-          #${BUILD_DIR}/${PROJECT_NAME}/${SOLUTION_NAME_5_NS}/${rpt_file}  \
-          #${BUILD_DIR}/${PROJECT_NAME}/${SOLUTION_NAME_1_NS}/${rpt_file}
 
