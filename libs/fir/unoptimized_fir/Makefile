@@ -91,19 +91,19 @@ ${VIVADO_HLS_PROJ_FILE}: ${SRC_DIR}/*.cpp ${SRC_DIR}/*.h ${TB_DIR}/*.cpp
 	cd ${BUILD_DIR} && time ( ${VIVADO_HLS_BIN} -f ${HLS_PROJ_CONFIG_TCL_FILE} )
 
 
-$(SIM_RPT_FILE):
+$(SIM_RPT_FILE): ${SRC_DIR}/*.cpp ${SRC_DIR}/*.h ${TB_DIR}/*.cpp
 
 	@echo "\n==============================  SIM  =============================\n"
 	cd ${BUILD_DIR} && time ( export HLS_EXEC=0 && ${VIVADO_HLS_BIN} -f ${HLS_RUN_TASK_TCL_FILE} )
 
 
-${SYNTH_RPT_FILE}:
+${SYNTH_RPT_FILE}: $(SIM_RPT_FILE)
 
 	@echo "\n============================  SYNTH  =============================\n"
 	cd ${BUILD_DIR} && time ( export HLS_EXEC=1 && ${VIVADO_HLS_BIN} -f ${HLS_RUN_TASK_TCL_FILE} )
 
 
-${COSIM_RPT_FILE}:
+${COSIM_RPT_FILE}: ${SYNTH_RPT_FILE}
 
 	@echo "\n============================  CO-SIM  ============================\n"
 	cd ${BUILD_DIR} && time ( export HLS_EXEC=2 && ${VIVADO_HLS_BIN} -f ${HLS_RUN_TASK_TCL_FILE} )
