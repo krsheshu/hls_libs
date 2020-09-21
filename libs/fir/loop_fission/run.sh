@@ -2,7 +2,8 @@
 
 if [[ $1 == "-h" ]]; then
 
-  echo "Usage : $0          - to make the complete program and display the comparison results ( def: target clock: 10ns)"
+  echo "Usage : $0          - To make the complete program and display the comparison results ( def: target clock 10ns )"
+  echo "      : $0 -c       - Delete the compelte build and run ( def: target clock 10ns )"
   echo "      : $0 -a       - Full Run ( run all solutions. def: target clock 10ns, 5ns and 1ns)"
   echo "      : $0 -h       - Display this help"
   exit
@@ -22,6 +23,13 @@ SOLUTION_NAME_10_NS=ns${CLK10}
 SOLUTION_NAME_5_NS=ns${CLK5}
 SOLUTION_NAME_1_NS=ns${CLK1}
 rpt_file=syn/report/${PROJECT_NAME}_csynth.rpt
+
+
+if [[ $1 == "-c" ]]; then
+
+  make clean
+
+fi
 
 make PROJECT_NAME=${PROJECT_NAME} SOLUTION_NAME=${SOLUTION_NAME_10_NS} TARGET_CLOCK_PERIOD_NS=${CLK10}
 
